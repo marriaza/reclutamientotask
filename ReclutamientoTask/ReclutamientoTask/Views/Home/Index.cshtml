@@ -1,0 +1,209 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@section style{
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+}
+
+<div class="container">
+    <br />
+    <br />
+    <div class="col-lg-12 col-md-12 text-center">
+        <h4>Colaboradores</h4>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <strong>Nombres:</strong>
+                <input class="form-control" id="txtnombre" type="text" placeholder="Nombre..." />
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <strong>Apellidos:</strong>
+                <input class="form-control" id="txtapellido" type="text" placeholder="Apellido..." />
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-4">
+
+                <div class="form-group">
+                    <strong>Fecha de Nacimiento:</strong>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control pull-right" id="dpfechanacimiento" />
+                        <span class="input-group-addon ">
+                            <span class="glyphicon glyphicon-calendar "></span>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <br />
+        <br />
+        <div class="col-lg-12 col-md-12 col-xs-12">
+
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <strong>Estado Civil:</strong>
+                <input class="form-control" id="txtestado" type="email" placeholder="estado..." />
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <strong>Dirección:</strong>
+                <input class="form-control" id="txtdireccion" type="email" placeholder="direccion..." />
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <strong>Grado Academico:</strong>
+                <input class="form-control" id="txtgrado" type="text" placeholder="Grado..." />
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 text-center">
+        <br />
+        <br />
+        <button class="btn btn-primary" id="btnguardar">Guardar Colaborador</button>
+
+    </div>
+
+    <!--Tabla-->
+    <div class="row">
+        <br />
+        <br />
+        <div class="col-md-12">
+            <div class="row">
+                <div class="navbar-form navbar-right" role="search">
+                    <div class="form-search form-group" data-tabla="tbcolaboradores">
+                        <input type="text" id="buscar" class="search-query form-control" placeholder="Buscar">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-info">
+                    <div class="table-responsive">
+                        <div style="margin:auto">
+                            <table class="table table-striped table-bordered table-hover" data-orden="true" data-filtro="true"
+                                   data-fuente="dtLlenar" id="tbcolaboradores" data-seleccion="true">
+                                <thead>
+                                    <tr style="font-size:14px;">
+                                        <th data-tipo="string" data-campo="Nombres" data-alineacion="centro" style="text-align:center">Nombre</th>
+                                        <th data-tipo="string" data-campo="Apellidos" data-alineacion="centro" style="text-align:center">Apellido</th>
+                                        <th data-tipo="string" data-campo="Fecha_Nacimiento" data-alineacion="centro" style="text-align:center">fecha_nacimiento</th>
+                                        <th data-tipo="string" data-campo="Direccion" data-alineacion="centro" style="text-align:center">direccion</th>
+                                        <th data-tipo="string" data-campo="Estado_Civil" data-alineacion="centro" style="text-align:center">estado civil</th>
+                                        <th data-tipo="string" data-campo="Grado_Academico" data-alineacion="centro" style="text-align:center">grado academico</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size:12px">
+                                    <tr data-original-title="" title=""><td colspan="11">No hay filas para mostrar.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <nav class="text-center ">
+                    <ul class="pagination pagination-sm" data-tabla="tbcolaboradores" data-cantidad="50" data-grupo="10"></ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+
+    <script src="~/Scripts/tabla.js"></script>
+
+
+    <script src="~/Scripts/select2.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        GetData();
+
+    });
+
+    //Inicializacion DateTimePicker
+    $(function () {
+      
+        $('#datetimepicker1').datetimepicker({
+      
+        });
+
+    });
+
+
+        ///Function Que trae los datos *** Se utilizo un Js de bootstrap para que se vea mejor la tabla.
+    function GetData() {
+        var datosj = new Array();
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '@Url.Action("Get", "Colaboradores")',
+            data: { id_: ""},
+        }).done(function (msg) {
+            console.log(msg);
+
+            var datos = JSON.parse(JSON.stringify(msg));
+
+            llenarTablaLocal("tbcolaboradores", datos, null);
+
+        });
+        }
+
+        //limpiar variables
+        function cleardata() {
+
+            $("#txtnombre").val("");
+            $("#txtapellido").val("");
+            $("#dpfechanacimiento").val("");
+            $("#txtestado").val("");
+            $("#txtgrado").val("");
+            $("#txtdireccion").val("");
+
+        }
+
+    //Function que guarda los datos
+    function GuardarDatos() {
+        var datosj = new Array();
+        var token = $('[name=__RequestVerificationToken]').val();
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '@Url.Action("Create", "Colaboradores")',
+            data: {  id_: 0, nombres: $("#txtnombre").val(), apellidos: $("#txtapellido").val(), fecha_nacimiento: $("#dpfechanacimiento").val(), estado_civil: $("#txtestado").val(), grado_academico: $("#txtgrado").val(), direccion: $("#txtdireccion").val(), opcion: 0 }
+        }).done(function (msg) {
+
+            cleardata();
+            GetData();
+        });
+    }
+
+    //Evento Click
+    $("#btnguardar").on("click", function () {
+
+        GuardarDatos();
+
+    });
+
+
+
+
+
+
+
+
+    </script>
+}
